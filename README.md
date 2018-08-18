@@ -145,7 +145,7 @@ func printOutPorts() {
 
 ```
 
-## Example with portmidi (github.com/rakyll/portmidi)
+## Example with portmidi
 
 ```go
 package main
