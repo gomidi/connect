@@ -1,9 +1,8 @@
-github.com/gomidi/connect/imported/rtmidi v0.0.0-20180818193615-64d65916b055 h1:0wwt2UNx3b/ScclFwB3um5gfJEOzVwhlnr3NppK3+dU=
-github.com/gomidi/connect/imported/rtmidi v0.0.0-20180818193615-64d65916b055/go.mod h1:zUjKIk2vlEK+kwNc2MUtAmm8LG3mtzBRwwt6gdwtV3c=
-github.com/gomidi/mid v0.0.0-20180818170814-7d37ca6b4142 h1:sGcP/VC7fKuGcDc6rMEdh/o6MiLcMn3SrjG6PBdZK1c=
-github.com/gomidi/mid v0.0.0-20180818170814-7d37ca6b4142/go.mod h1:o6uPziRQ1ajr0wBi6otsE2OHeAmxlT8m5I4sL7sLDuA=
 github.com/gomidi/mid v0.0.0-20180818190538-5bd944a7b959 h1:d8cH+bmNeHA0L+YDoIBqWnvktm/cmYaYij/18N3/DMA=
 github.com/gomidi/mid v0.0.0-20180818190538-5bd944a7b959/go.mod h1:o6uPziRQ1ajr0wBi6otsE2OHeAmxlT8m5I4sL7sLDuA=
+github.com/gomidi/mid/imported/rtmidi v0.0.0-20180818152747-9d327838c439/go.mod h1:S4U/UDwruCnylwb/QV4VOhSYRj61LZfpq6i3m3qwcRo=
 github.com/gomidi/midi v1.1.4 h1:v0EJs8opWwBFbGoeLB0kYTnpsjZz0VnvlA5PuYfHAOA=
 github.com/gomidi/midi v1.1.4/go.mod h1:B16DbgtsXSbQK9Q75aVezVL6VGhaK+2CVe/ybwUUCHE=
 github.com/rakyll/portmidi v0.0.0-20170620004031-e434d7284291/go.mod h1:tO1ylmFo6+hnYFvj/fd92q30wkNQwgWC/8mcHq0KkQU=
+github.com/rakyll/portmidi v0.0.0-20170716032345-1246dd47c560 h1:LxQoLCD5lQzG48j4BYI6CnKNSbnXAL5KL1oZfempXcE=
+github.com/rakyll/portmidi v0.0.0-20170716032345-1246dd47c560/go.mod h1:tO1ylmFo6+hnYFvj/fd92q30wkNQwgWC/8mcHq0KkQU=
