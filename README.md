@@ -3,7 +3,7 @@ Adapters to connect with the outside MIDI world
 
 ## Purpose
 
-To connect the `github.com/gomidi/mid` package with the outside MIDI world, there are two adapter packages.
+To connect the https://github.com/gomidi/mid package with the outside MIDI world, there are two adapter packages.
 
 ## Installation
 
