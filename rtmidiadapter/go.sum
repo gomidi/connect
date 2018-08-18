@@ -2,6 +2,8 @@ github.com/gomidi/connect/imported/rtmidi v0.0.0-20180818195311-f71a4e838e93 h1:
 github.com/gomidi/connect/imported/rtmidi v0.0.0-20180818195311-f71a4e838e93/go.mod h1:zUjKIk2vlEK+kwNc2MUtAmm8LG3mtzBRwwt6gdwtV3c=
 github.com/gomidi/mid v0.0.0-20180818194654-72b8efd08f5e h1:gnrsYPhOWfzLxF1367OHJMiYCUgApJT/aQsD5yxp2lw=
 github.com/gomidi/mid v0.0.0-20180818194654-72b8efd08f5e/go.mod h1:o6uPziRQ1ajr0wBi6otsE2OHeAmxlT8m5I4sL7sLDuA=
+github.com/gomidi/mid v0.8.1 h1:Mt+u4Swvfnkl+dMR/Bab6sgPp5V7ypD09tPHUjGeAVc=
+github.com/gomidi/mid v0.8.1/go.mod h1:o6uPziRQ1ajr0wBi6otsE2OHeAmxlT8m5I4sL7sLDuA=
 github.com/gomidi/midi v1.1.4 h1:v0EJs8opWwBFbGoeLB0kYTnpsjZz0VnvlA5PuYfHAOA=
 github.com/gomidi/midi v1.1.4/go.mod h1:B16DbgtsXSbQK9Q75aVezVL6VGhaK+2CVe/ybwUUCHE=
 github.com/rakyll/portmidi v0.0.0-20170620004031-e434d7284291/go.mod h1:tO1ylmFo6+hnYFvj/fd92q30wkNQwgWC/8mcHq0KkQU=
