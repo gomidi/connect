@@ -3,11 +3,14 @@ package main
 import (
 	"fmt"
 	"github.com/gomidi/connect/imported/rtmidi"
-	"github.com/gomidi/connect/rtmidiadapter"
+	rta "github.com/gomidi/connect/rtmidiadapter"
 	"github.com/gomidi/mid"
 	"time"
 )
 
+// This example expects the first input and output port to be connected
+// somehow (are either virtual MIDI through ports or physically connected).
+// We write to the out port and listen to the in port.
 func main() {
 
 	{ // find the ports
@@ -17,16 +20,17 @@ func main() {
 	}
 
 	var ( // wire it up
-		midiIn, midiOut = openMIDIIn(0), openMIDIOut(0)
-		in, out         = rtmidiadapter.In(midiIn), rtmidiadapter.Out(midiOut)
-		rd              = mid.NewReader()
-		wr              = mid.SpeakTo(out)
+		rtOut   = openOut(0) // where we write to, customize the port!
+		rtIn    = openIn(0)  // where we listen on, customize the port!
+		in, out = rta.In(rtIn), rta.Out(rtOut)
+		rd      = mid.NewReader()
+		wr      = mid.SpeakTo(out)
 	)
 
 	// listen for MIDI
 	go rd.ListenTo(in)
 
-	{ // write MIDI
+	{ // write MIDI to out that passes it to in on which we listen.
 		wr.NoteOn(60, 100)
 		time.Sleep(time.Nanosecond)
 		wr.NoteOff(60)
@@ -42,73 +46,51 @@ func main() {
 
 	{ // clean up
 		in.StopListening()
-		midiIn.Destroy()
-		midiOut.Destroy()
+
+		// close the rtmidi ports
+		rtIn.Destroy()
+		rtOut.Destroy()
 	}
 }
 
-func openMIDIIn(port int) rtmidi.MIDIIn {
-	in, err := rtmidi.NewMIDIInDefault()
+func openIn(port int) rtmidi.MIDIIn {
+	in, err := rta.OpenIn(port)
 	if err != nil {
-		panic("can't open default MIDI in:" + err.Error())
+		panic(err.Error())
 	}
-
-	err = in.OpenPort(port, "")
-	if err != nil {
-		panic("can't open MIDI in port:" + err.Error())
-	}
-
 	return in
 }
 
-func openMIDIOut(port int) rtmidi.MIDIOut {
-	out, err := rtmidi.NewMIDIOutDefault()
+func openOut(port int) rtmidi.MIDIOut {
+	out, err := rta.OpenOut(port)
 	if err != nil {
-		panic("can't open default MIDI out:" + err.Error())
+		panic(err.Error())
 	}
-
-	err = out.OpenPort(port, "")
-	if err != nil {
-		panic("can't open MIDI out port:" + err.Error())
-	}
-
 	return out
 }
 
 func printInPorts() {
-	in, err := rtmidi.NewMIDIInDefault()
+	ins, err := rta.InPorts()
 	if err != nil {
-		panic("can't open default MIDI in:" + err.Error())
-	}
-
-	ports, errP := in.PortCount()
-	if errP != nil {
-		panic("can't get number of in ports:" + errP.Error())
+		panic(err.Error())
 	}
 
 	fmt.Println("\n---MIDI input ports---")
 
-	for i := 0; i < ports; i++ {
-		name, _ := in.PortName(i)
+	for i, name := range ins {
 		fmt.Printf("%d %#v\n", i, name)
 	}
 }
 
 func printOutPorts() {
-	out, err := rtmidi.NewMIDIOutDefault()
+	outs, err := rta.OutPorts()
 	if err != nil {
-		panic("can't open default MIDI out:" + err.Error())
-	}
-
-	ports, errP := out.PortCount()
-	if errP != nil {
-		panic("can't get number of out ports:" + errP.Error())
+		panic(err.Error())
 	}
 
 	fmt.Println("\n---MIDI output ports---")
 
-	for i := 0; i < ports; i++ {
-		name, _ := out.PortName(i)
+	for i, name := range outs {
 		fmt.Printf("%d %#v\n", i, name)
 	}
 }

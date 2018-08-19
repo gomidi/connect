@@ -9,6 +9,9 @@ import (
 	"time"
 )
 
+// This example expects the first input and output port to be connected
+// somehow (are either virtual MIDI through ports or physically connected).
+// We write to the out port and listen to the in port.
 func main() {
 
 	// don't forget!
@@ -20,8 +23,8 @@ func main() {
 	}
 
 	var ( // wire it up
-		midiIn  = openMIDIIn(portmidi.DefaultInputDeviceID())
-		midiOut = openMIDIOut(portmidi.DefaultOutputDeviceID())
+		midiOut = openMIDIOut(portmidi.DefaultOutputDeviceID()) // where we write to, customize the port!
+		midiIn  = openMIDIIn(portmidi.DefaultInputDeviceID())   // where we listen on, customize the port!
 		in, out = portmidiadapter.In(midiIn), portmidiadapter.Out(midiOut)
 		rd      = mid.NewReader()
 		wr      = mid.SpeakTo(out)
