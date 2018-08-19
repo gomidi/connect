@@ -1,9 +1,9 @@
 # connect
-Adapters to connect with the outside MIDI world
+Adapters to connect https://github.com/gomidi/mid with `rtmidi` and `portmidi`
 
 ## Purpose
 
-To connect the https://github.com/gomidi/mid package with the outside MIDI world, there are two adapter packages - one for `rtmidi` and one for `portmidi`.
+To connect the https://github.com/gomidi/mid package with the outside MIDI world, here are two adapter packages - one for `rtmidi` and one for `portmidi`.
 
 ## Installation
 
