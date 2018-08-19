@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+// Out wraps an output portmidi.Stream to make it compatible with gomidi/mid#Out
 func Out(o *portmidi.Stream) mid.Out {
 	return &out{o}
 }
@@ -19,16 +20,50 @@ func (o *out) Send(b []byte) error {
 	return o.WriteShort(int64(b[0]), int64(b[1]), int64(b[2]))
 }
 
-func In(i *portmidi.Stream) mid.In {
-	return &in{Stream: i}
+// InOption is an option that can be passed to In
+type InOption func(*in)
+
+// BufferSize sets the size of the buffer when reading from in port
+// The default buffersize is 1024
+func BufferSize(buffersize int) InOption {
+	return func(i *in) {
+		i.buffersize = buffersize
+	}
+}
+
+// SleepingTime sets the duration for sleeping between reads when polling on in port
+// The default sleeping time is 0.1ms
+func SleepingTime(d time.Duration) InOption {
+	return func(i *in) {
+		i.sleepingTime = d
+	}
+}
+
+// In wraps an input portmidi.Stream to make it compatible with gomidi/mid#In
+func In(i *portmidi.Stream, options ...InOption) mid.In {
+	_in := &in{Stream: i}
+	_in.buffersize = 1024
+
+	// sleepingTime of 0.1ms should be fine to prevent busy waiting
+	// and still fast enough for performances
+	_in.sleepingTime = time.Nanosecond * 1000 * 100
+
+	for _, opt := range options {
+		opt(_in)
+	}
+
+	return _in
 }
 
 type in struct {
 	*portmidi.Stream
-	mx      sync.Mutex
-	stopped bool
+	mx           sync.Mutex
+	stopped      bool
+	buffersize   int
+	sleepingTime time.Duration
 }
 
+// StopListening cancels the listening
 func (i *in) StopListening() {
 	i.mx.Lock()
 	i.stopped = true
@@ -36,9 +71,7 @@ func (i *in) StopListening() {
 }
 
 func (i *in) read(cb func([]byte)) error {
-	//1024
-	//events, err := r.in.Read(3)
-	events, err := i.Read(1024)
+	events, err := i.Read(i.buffersize)
 
 	if err != nil {
 		return err
@@ -55,11 +88,10 @@ func (i *in) read(cb func([]byte)) error {
 	return nil
 }
 
+// SetListener makes the listener listen to the in port
 func (i *in) SetListener(f func([]byte)) {
 	for i.stopped == false {
 		i.read(f)
-		// sleep 0.1ms, that should be fine to prevent busy waiting
-		// and still fast enough for performances
-		time.Sleep(time.Nanosecond * 1000 * 100)
+		time.Sleep(i.sleepingTime)
 	}
 }
