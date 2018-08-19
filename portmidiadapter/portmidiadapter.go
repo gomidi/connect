@@ -7,6 +7,50 @@ import (
 	"time"
 )
 
+// InPorts returns a map of the input ports where the key is the portmidi.DeviceID
+// and the value is the name.
+func InPorts() map[portmidi.DeviceID]string {
+	ports := map[portmidi.DeviceID]string{}
+
+	no := portmidi.CountDevices()
+
+	for i := 0; i < no; i++ {
+		info := portmidi.Info(portmidi.DeviceID(i))
+		if info != nil && info.IsInputAvailable {
+			ports[portmidi.DeviceID(i)] = info.Name
+		}
+	}
+
+	return ports
+}
+
+// OutPorts returns a map of the output ports where the key is the portmidi.DeviceID
+// and the value is the name.
+func OutPorts() map[portmidi.DeviceID]string {
+	ports := map[portmidi.DeviceID]string{}
+
+	no := portmidi.CountDevices()
+
+	for i := 0; i < no; i++ {
+		info := portmidi.Info(portmidi.DeviceID(i))
+		if info != nil && info.IsOutputAvailable {
+			ports[portmidi.DeviceID(i)] = info.Name
+		}
+	}
+
+	return ports
+}
+
+// OpenIn opens the given input port and returns it.
+func OpenIn(port portmidi.DeviceID) (*portmidi.Stream, error) {
+	return portmidi.NewInputStream(port, 1024)
+}
+
+// OpenOut opens the given output port and returns it.
+func OpenOut(port portmidi.DeviceID) (*portmidi.Stream, error) {
+	return portmidi.NewOutputStream(port, 1024, 0)
+}
+
 // Out wraps an output portmidi.Stream to make it compatible with gomidi/mid#Out
 func Out(o *portmidi.Stream) mid.Out {
 	return &out{o}
@@ -16,6 +60,7 @@ type out struct {
 	*portmidi.Stream
 }
 
+// Send sends a message to the out port
 func (o *out) Send(b []byte) error {
 	return o.WriteShort(int64(b[0]), int64(b[1]), int64(b[2]))
 }

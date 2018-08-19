@@ -1,9 +1,8 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
-	"github.com/gomidi/connect/portmidiadapter"
+	pma "github.com/gomidi/connect/portmidiadapter"
 	"github.com/gomidi/mid"
 	"github.com/rakyll/portmidi"
 	"time"
@@ -18,14 +17,15 @@ func main() {
 	portmidi.Initialize()
 
 	{ // find the ports
-		printPorts()
+		printInPorts()
+		printOutPorts()
 		fmt.Println(" \n--Messages--")
 	}
 
 	var ( // wire it up
-		midiOut = openMIDIOut(portmidi.DefaultOutputDeviceID()) // where we write to, customize the port!
-		midiIn  = openMIDIIn(portmidi.DefaultInputDeviceID())   // where we listen on, customize the port!
-		in, out = portmidiadapter.In(midiIn), portmidiadapter.Out(midiOut)
+		pmOut   = openOut(1) // where we write to, customize the port!
+		pmIn    = openIn(0)  // where we listen on, customize the port!
+		in, out = pma.In(pmIn), pma.Out(pmOut)
 		rd      = mid.NewReader()
 		wr      = mid.SpeakTo(out)
 	)
@@ -49,51 +49,39 @@ func main() {
 
 	{ // clean up
 		in.StopListening()
-		midiIn.Close()
-		midiOut.Close()
+		pmIn.Close()
+		pmOut.Close()
 	}
 }
 
-func openMIDIIn(port portmidi.DeviceID) *portmidi.Stream {
-	in, err := portmidi.NewInputStream(port, 1024)
-
+func openIn(port portmidi.DeviceID) *portmidi.Stream {
+	in, err := pma.OpenIn(port)
 	if err != nil {
 		panic("can't open MIDI in port:" + err.Error())
 	}
-
 	return in
 }
 
-func openMIDIOut(port portmidi.DeviceID) *portmidi.Stream {
-	out, err := portmidi.NewOutputStream(port, 1024, 0)
-
+func openOut(port portmidi.DeviceID) *portmidi.Stream {
+	out, err := pma.OpenOut(port)
 	if err != nil {
 		panic("can't open MIDI out port:" + err.Error())
 	}
-
 	return out
 }
 
-func printPorts() {
-	var ins, outs bytes.Buffer
-
-	no := portmidi.CountDevices()
-
-	for i := 0; i < no; i++ {
-		info := portmidi.Info(portmidi.DeviceID(i))
-		if info.IsInputAvailable {
-			fmt.Fprintf(&ins, "%d %#v\n", i, info.Name)
-		}
-
-		if info.IsOutputAvailable {
-			fmt.Fprintf(&outs, "%d %#v\n", i, info.Name)
-		}
-	}
-
+func printInPorts() {
+	ins := pma.InPorts()
 	fmt.Println("\n---MIDI input ports---")
-	fmt.Println(ins.String())
+	for i, name := range ins {
+		fmt.Printf("%d %#v\n", i, name)
+	}
+}
 
+func printOutPorts() {
+	outs := pma.OutPorts()
 	fmt.Println("\n---MIDI output ports---")
-	fmt.Println(outs.String())
-
+	for i, name := range outs {
+		fmt.Printf("%d %#v\n", i, name)
+	}
 }
