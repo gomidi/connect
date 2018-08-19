@@ -22,6 +22,12 @@ For portaudio (see https://github.com/rakyll/portmidi for more information)
 go get -d github.com/gomidi/connect/portmidiadapter
 ```
 
+## Documentation
+
+rtmidi: [![rtmidi docs](http://godoc.org/github.com/gomidi/connect/rtmidiadapter?status.png)](http://godoc.org/github.com/gomidi/connect/rtmidiadapter)
+
+portmidi: [![portmidi docs](http://godoc.org/github.com/gomidi/connect/portmidiadapter?status.png)](http://godoc.org/github.com/gomidi/connect/portmidiadapter)
+
 ## Example
 
 This example uses `rtmidi` which in my experience is far more perfomant than `portmidi`.
@@ -39,6 +45,9 @@ import (
     "time"
 )
 
+// This example expects the first input and output port to be connected
+// somehow (are either virtual MIDI through ports or physically connected).
+// We write to the out port and listen to the in port.
 func main() {
 
     { // find the ports
@@ -48,7 +57,8 @@ func main() {
     }
 
     var ( // wire it up
-        rtIn, rtOut = openIn(0), openOut(0)
+        rtOut       = openOut(0) // where we write to, customize the port!
+        rtIn        = openIn(0) // where we listen on, customize the port!
         in, out     = rta.In(rtIn), rta.Out(rtOut)
         rd          = mid.NewReader()
         wr          = mid.SpeakTo(out)
@@ -57,7 +67,7 @@ func main() {
     // listen for MIDI
     go rd.ListenTo(in)
 
-    { // write MIDI
+    { // write MIDI to out that passes it to in on which we listen.
         wr.NoteOn(60, 100)
         time.Sleep(time.Nanosecond)
         wr.NoteOff(60)
