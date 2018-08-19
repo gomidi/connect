@@ -24,9 +24,9 @@ go get -d github.com/gomidi/connect/portmidiadapter
 
 ## Documentation
 
-rtmidi: [![rtmidi docs](http://godoc.org/github.com/gomidi/connect/rtmidiadapter?status.png)](http://godoc.org/github.com/gomidi/connect/rtmidiadapter)
+rtmidiadapter: [![rtmidi docs](http://godoc.org/github.com/gomidi/connect/rtmidiadapter?status.png)](http://godoc.org/github.com/gomidi/connect/rtmidiadapter)
 
-portmidi: [![portmidi docs](http://godoc.org/github.com/gomidi/connect/portmidiadapter?status.png)](http://godoc.org/github.com/gomidi/connect/portmidiadapter)
+portmidiadapter: [![portmidi docs](http://godoc.org/github.com/gomidi/connect/portmidiadapter?status.png)](http://godoc.org/github.com/gomidi/connect/portmidiadapter)
 
 ## Example
 
