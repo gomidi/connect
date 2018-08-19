@@ -16,8 +16,6 @@ func names(m rtmidi.MIDI, numports int) (n []string) {
 		}
 
 		n = append(n, name)
-
-		// fmt.Printf("%d %#v\n", i, name)
 	}
 
 	return
@@ -37,23 +35,6 @@ func InPorts() ([]string, error) {
 		return nil, fmt.Errorf("can't get number of in ports: %s", errP.Error())
 	}
 
-	/*
-		// fmt.Println("\n---MIDI input ports---")
-		var names []string
-
-		for i := 0; i < ports; i++ {
-			name, errN := in.PortName(i)
-
-			if errN != nil {
-				name = ""
-			}
-
-			names = append(names, name)
-
-			// fmt.Printf("%d %#v\n", i, name)
-		}
-	*/
-
 	return names(in, ports), nil
 }
 
@@ -71,14 +52,6 @@ func OutPorts() ([]string, error) {
 		return nil, fmt.Errorf("can't get number of out ports: %s", errP.Error())
 	}
 
-	// fmt.Println("\n---MIDI output ports---")
-
-	/*
-		for i := 0; i < ports; i++ {
-			name, _ := out.PortName(i)
-			fmt.Printf("%d %#v\n", i, name)
-		}
-	*/
 	return names(out, ports), nil
 }
 
@@ -112,6 +85,7 @@ func OpenOut(port int) (rtmidi.MIDIOut, error) {
 	return out, nil
 }
 
+// Out wraps an rtmidi.MIDIOut to make it compatible with gomidi/mid#Out
 func Out(o rtmidi.MIDIOut) mid.Out {
 	return &out{o}
 }
@@ -120,10 +94,12 @@ type out struct {
 	rtmidi.MIDIOut
 }
 
+// Send sends a message to the out port
 func (o *out) Send(b []byte) error {
 	return o.SendMessage(b)
 }
 
+// In wraps an rtmidi.MIDIIn to make it compatible with gomidi/mid#In
 func In(i rtmidi.MIDIIn) mid.In {
 	return &in{i}
 }
@@ -132,10 +108,12 @@ type in struct {
 	rtmidi.MIDIIn
 }
 
+// StopListening cancels the listening
 func (i *in) StopListening() {
 	i.CancelCallback()
 }
 
+// SetListener makes the listener listen to the in port
 func (i *in) SetListener(f func([]byte)) {
 	i.SetCallback(func(_ rtmidi.MIDIIn, bt []byte, _ float64) {
 		f(bt)
