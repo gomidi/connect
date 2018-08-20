@@ -1,12 +1,5 @@
-github.com/gomidi/connect/portmidiadapter v0.0.0-20180818195155-0cffdf01d1a2 h1:vpCTEk6LDbzXfo8zWjDCdakX/XgyikPBvR23C2ei+Kw=
-github.com/gomidi/connect/portmidiadapter v0.0.0-20180818195155-0cffdf01d1a2/go.mod h1:JSEaZF80+A1cxWyYAtVDXsInrv6nTWBIxJ85w6O1edY=
 github.com/gomidi/connect/portmidiadapter v0.0.0-20180819131153-0daabbcd5181 h1:ipHucziYVo0W9FZ+EOVdNsYl/yedBBXGGceymBpLi50=
 github.com/gomidi/connect/portmidiadapter v0.0.0-20180819131153-0daabbcd5181/go.mod h1:+4YgW+eIMPZW6XoRZ535C2Ki/XxCeG+QyIXp7NybGYQ=
-github.com/gomidi/mid v0.0.0-20180818194654-72b8efd08f5e h1:gnrsYPhOWfzLxF1367OHJMiYCUgApJT/aQsD5yxp2lw=
-github.com/gomidi/mid v0.0.0-20180818194654-72b8efd08f5e/go.mod h1:o6uPziRQ1ajr0wBi6otsE2OHeAmxlT8m5I4sL7sLDuA=
-github.com/gomidi/mid v0.8.1 h1:Mt+u4Swvfnkl+dMR/Bab6sgPp5V7ypD09tPHUjGeAVc=
-github.com/gomidi/mid v0.8.1/go.mod h1:o6uPziRQ1ajr0wBi6otsE2OHeAmxlT8m5I4sL7sLDuA=
-github.com/gomidi/mid v0.8.3 h1:PXgMnLlqnWu7LdQOkI/Zu538zh3VKuaNH1o8ngtjXZo=
 github.com/gomidi/mid v0.8.3/go.mod h1:o6uPziRQ1ajr0wBi6otsE2OHeAmxlT8m5I4sL7sLDuA=
 github.com/gomidi/mid v0.9.0 h1:xosl2Qhdq6Y+6jKJnzA6K1EvuNlrCU4XQ2RUcqsxryo=
 github.com/gomidi/mid v0.9.0/go.mod h1:o6uPziRQ1ajr0wBi6otsE2OHeAmxlT8m5I4sL7sLDuA=
