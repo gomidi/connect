@@ -24,11 +24,11 @@ func main() {
 		rtIn    = openIn(0)  // where we listen on, customize the port!
 		in, out = rta.In(rtIn), rta.Out(rtOut)
 		rd      = mid.NewReader()
-		wr      = mid.SpeakTo(out)
+		wr      = mid.WriteTo(out)
 	)
 
 	// listen for MIDI
-	go rd.ListenTo(in)
+	go rd.ReadFrom(in)
 
 	{ // write MIDI to out that passes it to in on which we listen.
 		wr.NoteOn(60, 100)

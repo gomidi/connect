@@ -27,11 +27,11 @@ func main() {
 		pmIn    = openIn(0)  // where we listen on, customize the port!
 		in, out = pma.In(pmIn), pma.Out(pmOut)
 		rd      = mid.NewReader()
-		wr      = mid.SpeakTo(out)
+		wr      = mid.WriteTo(out)
 	)
 
 	// listen for MIDI
-	go rd.ListenTo(in)
+	go rd.ReadFrom(in)
 
 	{ // write MIDI
 		wr.NoteOn(60, 100)
