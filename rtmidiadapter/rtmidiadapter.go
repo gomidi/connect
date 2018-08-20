@@ -3,6 +3,7 @@ package rtmidiadapter
 import (
 	"fmt"
 	"github.com/gomidi/mid"
+	"math"
 	//github.com/thestk/rtmidi/tree/master/contrib/go/rtmidi
 	"github.com/gomidi/connect/imported/rtmidi"
 )
@@ -86,7 +87,7 @@ func OpenOut(port int) (rtmidi.MIDIOut, error) {
 }
 
 // Out wraps an rtmidi.MIDIOut to make it compatible with gomidi/mid#Out
-func Out(o rtmidi.MIDIOut) mid.Out {
+func Out(o rtmidi.MIDIOut) mid.OutConnection {
 	return &out{o}
 }
 
@@ -100,7 +101,7 @@ func (o *out) Send(b []byte) error {
 }
 
 // In wraps an rtmidi.MIDIIn to make it compatible with gomidi/mid#In
-func In(i rtmidi.MIDIIn) mid.In {
+func In(i rtmidi.MIDIIn) mid.InConnection {
 	return &in{i}
 }
 
@@ -114,8 +115,9 @@ func (i *in) StopListening() {
 }
 
 // SetListener makes the listener listen to the in port
-func (i *in) SetListener(f func([]byte)) {
-	i.SetCallback(func(_ rtmidi.MIDIIn, bt []byte, _ float64) {
-		f(bt)
+func (i *in) SetListener(f func(data []byte, deltaMicroseconds int64)) {
+	i.SetCallback(func(_ rtmidi.MIDIIn, bt []byte, deltaSeconds float64) {
+		// we want deltaMicroseconds as int64
+		f(bt, int64(math.Round(deltaSeconds*1000000)))
 	})
 }

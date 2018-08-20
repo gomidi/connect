@@ -52,7 +52,7 @@ func OpenOut(port portmidi.DeviceID) (*portmidi.Stream, error) {
 }
 
 // Out wraps an output portmidi.Stream to make it compatible with gomidi/mid#Out
-func Out(o *portmidi.Stream) mid.Out {
+func Out(o *portmidi.Stream) mid.OutConnection {
 	return &out{o}
 }
 
@@ -85,7 +85,7 @@ func SleepingTime(d time.Duration) InOption {
 }
 
 // In wraps an input portmidi.Stream to make it compatible with gomidi/mid#In
-func In(i *portmidi.Stream, options ...InOption) mid.In {
+func In(i *portmidi.Stream, options ...InOption) mid.InConnection {
 	_in := &in{Stream: i}
 	_in.buffersize = 1024
 
@@ -102,10 +102,11 @@ func In(i *portmidi.Stream, options ...InOption) mid.In {
 
 type in struct {
 	*portmidi.Stream
-	mx           sync.Mutex
-	stopped      bool
-	buffersize   int
-	sleepingTime time.Duration
+	lastTimestamp portmidi.Timestamp
+	mx            sync.Mutex
+	stopped       bool
+	buffersize    int
+	sleepingTime  time.Duration
 }
 
 // StopListening cancels the listening
@@ -115,7 +116,7 @@ func (i *in) StopListening() {
 	i.mx.Unlock()
 }
 
-func (i *in) read(cb func([]byte)) error {
+func (i *in) read(cb func([]byte, int64)) error {
 	events, err := i.Read(i.buffersize)
 
 	if err != nil {
@@ -127,16 +128,22 @@ func (i *in) read(cb func([]byte)) error {
 		b[0] = byte(ev.Status)
 		b[1] = byte(ev.Data1)
 		b[2] = byte(ev.Data2)
-		cb(b)
+		// ev.Timestamp is in Milliseconds
+		// we want deltaMicroseconds as int64
+		cb(b, int64(ev.Timestamp-i.lastTimestamp)*1000)
 	}
 
 	return nil
 }
 
 // SetListener makes the listener listen to the in port
-func (i *in) SetListener(f func([]byte)) {
+func (i *in) SetListener(f func(data []byte, deltaMicroseconds int64)) {
+	i.lastTimestamp = portmidi.Time()
 	for i.stopped == false {
-		i.read(f)
+		has, _ := i.Poll()
+		if has {
+			i.read(f)
+		}
 		time.Sleep(i.sleepingTime)
 	}
 }

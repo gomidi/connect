@@ -8,5 +8,5 @@ replace (
 require (
 	github.com/gomidi/connect/imported/rtmidi v0.0.0-20180818202137-868136c52a76
 	github.com/gomidi/connect/rtmidiadapter v0.0.0-20180818202137-868136c52a76
-	github.com/gomidi/mid v0.8.3
+	github.com/gomidi/mid v0.9.0
 )
