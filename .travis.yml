@@ -10,5 +10,8 @@ sudo: false
 #script:
 #  - $HOME/gopath/bin/goveralls -service=travis-ci
 
+before_install:
+  - sudo apt-get install libasound2-dev
+  - sudo apt-get install libportmidi-dev
 env:
   - GO111MODULE=on
