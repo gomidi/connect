@@ -1,6 +1,8 @@
 # connect
 Adapters to connect https://github.com/gomidi/mid with `rtmidi` and `portmidi`
 
+[![Build Status Travis/Linux](https://travis-ci.org/gomidi/connect.svg?branch=master)](http://travis-ci.org/gomidi/connect)
+
 ## Purpose
 
 To connect the https://github.com/gomidi/mid package with the outside MIDI world, here are two adapter packages - one for `rtmidi` and one for `portmidi`.
