@@ -3,8 +3,8 @@
 // license that can be found in the LICENSE file.
 
 /*
-Package rtmidiadapter provides an adapter to connect gomidi/mid with external MIDI ports via rtmidi.
+Package portmididrv provides an gomidi/connect.Driver to connect gomidi/mid with external MIDI ports via portmidi.
 See the example to get an idea how to use it.
 
 */
-package rtmidiadapter
+package portmididrv
