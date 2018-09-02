@@ -72,3 +72,87 @@ type Out interface {
 
 // ErrClosed should be returned from a driver when trying to write to a closed port.
 var ErrClosed = fmt.Errorf("ERROR: port is closed")
+
+// OpenIn opens a MIDI port with the help of the given driver
+// To find the port by port number, pass a number >= 0.
+// To find the port by port name, pass a number < 0 and a non empty string.
+func OpenIn(d Driver, number int, name string) (in In, err error) {
+	ins, err := d.Ins()
+	if err != nil {
+		return nil, fmt.Errorf("can't find MIDI in ports: %v", err)
+	}
+
+	if number >= 0 {
+		for _, port := range ins {
+			if number == port.Number() {
+				in = port
+				break
+			}
+		}
+		if in == nil {
+			return nil, fmt.Errorf("can't find MIDI in port %v", number)
+		}
+	} else {
+		if name != "" {
+			for _, port := range ins {
+				if name == port.String() {
+					in = port
+					break
+				}
+			}
+		}
+		if in == nil {
+			return nil, fmt.Errorf("can't find MIDI in port %v", name)
+		}
+	}
+
+	// should not happen here, since we already returned above
+	if in == nil {
+		panic("unreachable")
+	}
+
+	err = in.Open()
+	return
+}
+
+// OpenOut opens a MIDI port with the help of the given driver
+// To find the port by port number, pass a number >= 0.
+// To find the port by port name, pass a number < 0 and a non empty string.
+func OpenOut(d Driver, number int, name string) (out Out, err error) {
+	outs, err := d.Outs()
+	if err != nil {
+		return nil, fmt.Errorf("can't find MIDI out ports: %v", err)
+	}
+
+	if number >= 0 {
+		for _, port := range outs {
+			if number == port.Number() {
+				out = port
+				break
+			}
+		}
+		if out == nil {
+			return nil, fmt.Errorf("can't find MIDI out port %v", number)
+		}
+	} else {
+		if name != "" {
+			for _, port := range outs {
+				if name == port.String() {
+					out = port
+					break
+				}
+			}
+		}
+		if out == nil {
+			return nil, fmt.Errorf("can't find MIDI out port %v", name)
+		}
+	}
+
+	// should not happen here, since we already returned above
+	if out == nil {
+		panic("unreachable")
+	}
+
+	err = out.Open()
+	return
+}
