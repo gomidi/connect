@@ -1,11 +1,15 @@
 # connect
-Drivers to connect https://github.com/gomidi/mid with `rtmidi` and `portmidi`
+Go interface for MIDI drivers
 
 [![Build Status Travis/Linux](https://travis-ci.org/gomidi/connect.svg?branch=master)](http://travis-ci.org/gomidi/connect)
 
 ## Purpose
 
-To connect the https://github.com/gomidi/mid package with the outside MIDI world, here are two driver packages - one for `rtmidi` and one for `portmidi`.
+Unification of MIDI driver packages for Go. Currently two implementations exist: 
+- for rtmidi: https://github.com/gomidi/rtmididrv
+- for portmidi: https://github.com/gomidi/portmididrv
+
+This package is also used by https://github.com/gomidi/mid for smooth integration
 
 ## Installation
 
@@ -14,27 +18,24 @@ It is recommended to use Go 1.11 with module support (`$GO111MODULE=on`).
 For rtmidi (see https://github.com/thestk/rtmidi for more information)
 
 ```
-go get -d github.com/gomidi/connect/rtmididrv
+// install the headers of alsa somehow, e.g. sudo apt-get install libasound2-dev
+go get -d github.com/gomidi/rtmididrv
 ```
 
 For portaudio (see https://github.com/rakyll/portmidi for more information)
 
 ```
-// install the headers of portmidi somehow, e.g. apt-get install libportmidi-dev
-go get -d github.com/gomidi/connect/portmididrv
+// install the headers of portmidi somehow, e.g. sudo apt-get install libportmidi-dev
+go get -d github.com/gomidi/portmididrv
 ```
 
 ## Documentation
 
-rtmididrv: [![rtmidi docs](http://godoc.org/github.com/gomidi/connect/rtmididrv?status.png)](http://godoc.org/github.com/gomidi/connect/rtmididrv)
+rtmididrv: [![rtmidi docs](http://godoc.org/github.com/gomidi/rtmididrv?status.png)](http://godoc.org/github.com/gomidi/rtmididrv)
 
-portmididrv: [![portmidi docs](http://godoc.org/github.com/gomidi/connect/portmididrv?status.png)](http://godoc.org/github.com/gomidi/connect/portmididrv)
+portmididrv: [![portmidi docs](http://godoc.org/github.com/gomidi/portmididrv?status.png)](http://godoc.org/github.com/gomidi/portmididrv)
 
 ## Example
-
-This example uses `rtmidi` which in my experience is far more perfomant than `portmidi`.
-
-An example with portmidi could be found at `portmididrv/_example`.
 
 ```go
 package main
@@ -42,7 +43,9 @@ package main
 import (
 	"time"
 
-	"github.com/gomidi/connect/rtmididrv"
+	"github.com/gomidi/rtmididrv"
+	// for portmidi
+	// "github.com/gomidi/portmididrv"
 	"github.com/gomidi/mid"
 )
 
@@ -51,6 +54,9 @@ import (
 // We write to the out port and listen to the in port.
 func main() {
 	drv := rtmididrv.New()
+	
+	// for portmidi
+    // drv, err := portrtmididrv.New()
 
 	// make sure to close all open ports at the end
 	defer drv.Close()
@@ -85,7 +91,7 @@ func main() {
 		time.Sleep(time.Second * 1)
 	}
 
-	// close the rtmidi ports (would be done via drv.Close() anyway
+	// close the ports (would be done via drv.Close() anyway
 	ins[0].Close()
 	outs[0].Close()
 }

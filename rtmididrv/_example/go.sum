@@ -1,7 +1,0 @@
-github.com/gomidi/cc v0.2.0 h1:2IRNKQvLFl1nq974v0psFYBBzn95ZceNeKxK2eByFc8=
-github.com/gomidi/cc v0.2.0/go.mod h1:pp/v4mQ8/Z6O7KoGukAO9MNQ5nhUUgAJlJU7XsC4IpI=
-github.com/gomidi/connect v0.7.0 h1:UNJRmJbTpLKNnZVR7IWylOSs5sLlPdJOJlnQ5HqufTY=
-github.com/gomidi/mid v0.15.0 h1:UkHzHi5dArERz0ULxSciYwjLce8mZMG9mMFoafCycds=
-github.com/gomidi/mid v0.15.0/go.mod h1:eudyOHRUnIZ+Ikl4umKxYLjsSiYqrcF3zHfct3xRAuQ=
-github.com/gomidi/midi v1.4.1 h1:eRaiAALXTnzffQu8ShfaT7ZoINRHwK+yubgpGb8RA2c=
-github.com/gomidi/midi v1.4.1/go.mod h1:B16DbgtsXSbQK9Q75aVezVL6VGhaK+2CVe/ybwUUCHE=
