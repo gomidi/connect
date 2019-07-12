@@ -1,7 +1,10 @@
 # connect
 Go interface for MIDI drivers
 
+## Notice - Moved
 
+ Development has moved to GitLab https://gitlab.com/gomidi. It is recommended to use the code there instead, as the repos at Gitlab contains newer fixes, and some import references contained in the github repo may be broken
+ 
 ## Purpose
 
 Unification of MIDI driver packages for Go. Currently two implementations exist: 
